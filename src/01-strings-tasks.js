@@ -52,7 +52,7 @@ function getStringLength(value) {
  *   'Chuck','Norris'  => 'Hello, Chuck Norris!'
  */
 function getStringFromTemplate(firstName, lastName) {
-  return `Hello, ${firstName} ${lastName}`;
+  return `Hello, ${firstName} ${lastName}!`;
 }
 
 /**
@@ -175,37 +175,35 @@ function convertToUpperCase(str) {
  *   'info@gmail.com' => ['info@gmail.com']
  */
 function extractEmails(str) {
-  return str.split(',');
+  return str.split(';');
 }
 
 /**
- * Returns the string representation of rectangle with specified width and height
- * using pseudograhic chars
- *
- * @param {number} width
- * @param {number} height
- * @return {string}
- *
- * @example
- *
- *            '┌────┐\n'+
- *  (6,4) =>  '│    │\n'+
- *            '│    │\n'+
- *            '└────┘\n'
- *
- *  (2,2) =>  '┌┐\n'+
- *            '└┘\n'
- *
- *             '┌──────────┐\n'+
- *  (12,3) =>  '│          │\n'+
- *             '└──────────┘\n'
- *
- *
+* Returns the string representation of rectangle with specified width and height
+* using pseudograhic chars
+*
+* @param {number} width
+* @param {number} height
+* @return {string}
+*
+* @example
+*
+*            '┌────┐\n'+
+*  (6,4) =>  '│    │\n'+
+*            '│    │\n'+
+*            '└────┘\n'
+*
+*  (2,2) =>  '┌┐\n'+
+*            '└┘\n'
+*
+*             '┌──────────┐\n'+
+*  (12,3) =>  '│          │\n'+
+*             '└──────────┘\n'
+*
+*/
 function getRectangleString(width, height) {
-  const rect = new Windows.rect(width, height);
-    return rect.toString();
-    
-}*/
+  return width + height;
+}
 
 
 /**
@@ -226,9 +224,14 @@ function getRectangleString(width, height) {
  */
 function encodeToRot13(str) {
   let newStr;
-  for (let i = 0; i < str.length; i++) {
-    newStr += String.fromCharCode(65 + (str.charCodeAt(i) + 13 - 65) % 26);
+  for (let i = 0; i < str.length; i += 1) {
+    if (str.charCodeAt(i) >= 65 && str.charCodeAt(i) <= 90) {
+      newStr += String.fromCharCode(((str.charCodeAt(i) + 13 - 65) % 26) + 65);
+    } else {
+      newStr += String.fromCharCode(str.charCodeAt(i));
+    }
   }
+
   return newStr;
 }
 
