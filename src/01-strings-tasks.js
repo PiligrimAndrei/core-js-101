@@ -66,7 +66,7 @@ function getStringFromTemplate(firstName, lastName) {
  *   'Hello, Chuck Norris!' => 'Chuck Norris'
  */
 function extractNameFromTemplate(value) {
-  return value.split('')[1][2].join(' ');
+  return value.slice(7, -1);
 }
 
 /**
@@ -126,7 +126,7 @@ function repeatString(value, count) {
  *   'ABABAB','BA' => 'ABAB'
  */
 function removeFirstOccurrences(str, value) {
-  return str.replace(value);
+  return str.replace(`${value}`, '');
 }
 
 /**
@@ -141,7 +141,7 @@ function removeFirstOccurrences(str, value) {
  *   '<a>' => 'a'
  */
 function unbracketTag(str) {
-  return str.replace('<', '>');
+  return str.replace('<', '').replace('>', '');
 }
 
 
@@ -202,7 +202,16 @@ function extractEmails(str) {
 *
 */
 function getRectangleString(width, height) {
-  return width + height;
+  const symbolW = '─';
+  const symbolH = ' ';
+  let rect = null;
+  if (width > 0 && height > 0) {
+    const firstLine = `┌${symbolW.repeat(width - 2)}┐\n`;
+    const lastIine = `└${symbolW.repeat(width - 2)}┘\n`;
+    const line = `│${symbolH.repeat(width - 2)}│\n`;
+    rect = firstLine + line.repeat(height - 2) + lastIine;
+  }
+  return rect;
 }
 
 
@@ -223,16 +232,11 @@ function getRectangleString(width, height) {
  *
  */
 function encodeToRot13(str) {
-  let newStr;
-  for (let i = 0; i < str.length; i += 1) {
-    if (str.charCodeAt(i) >= 65 && str.charCodeAt(i) <= 90) {
-      newStr += String.fromCharCode(((str.charCodeAt(i) + 13 - 65) % 26) + 65);
-    } else {
-      newStr += String.fromCharCode(str.charCodeAt(i));
-    }
-  }
-
-  return newStr;
+  const input = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+  const output = 'NOPQRSTUVWXYZABCDEFGHIJKLMnopqrstuvwxyzabcdefghijklm';
+  const index = (x) => input.indexOf(x);
+  const translate = (x) => (index(x) > -1 ? output[index(x)] : x);
+  return str.split('').map(translate).join('');
 }
 
 /**
@@ -283,7 +287,6 @@ function getCardId(value) {
   const result = rank.split('').findIndex((item) => item === value[value.length - 2]) + 13 * suit.split('').findIndex((item) => item === value[value.length - 1]);
   return result;
 }
-
 
 module.exports = {
   concatenateStrings,
